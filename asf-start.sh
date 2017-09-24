@@ -2,8 +2,8 @@
 # Start script for ArchiSteamFarm
 # https://github.com/JustArchi/ArchiSteamFarm
 #
-# Zuko	https://github.com/Zuko
-# v1.0.0  24.09.2017
+# Zuko  https://github.com/Zuko
+# v1.0.1  24.09.2017
 
  ### Config
 ASF_DIR="/home/zuko/ASF-Main"
@@ -15,33 +15,33 @@ SCREEN_NAME="asf-main"
  ### Functions
 # $1 - List of executables to check [eg. checkSystemExecutables "sed grep"]
 function checkSystemExecutables {
-	[[ $# -eq 1 ]] || { echo -e "rong number of parameters in ${FUNCNAME}"; exit 1; }
+    [[ $# -eq 1 ]] || { echo -e "rong number of parameters in ${FUNCNAME}"; exit 1; }
 
-	local _LIST __LIST _ERROR
-	_LIST="${1}"
-	__LIST=()
-	_ERROR="0"
- 
-	for i in ${_LIST}; do
-		if ! type ${i} > /dev/null 2>&1; then
-			_ERROR="1"
-			__LIST+=("${i}")
-		fi
-	done
+    local _LIST __LIST _ERROR
+    _LIST="${1}"
+    __LIST=()
+    _ERROR="0"
 
-	if [[ "${_ERROR}" -eq "1" ]]; then
-		echo -e	 "Please install: $(cText "R" "${__LIST[*]}")"
-		return 1
-	else
-		return 0
-	fi
+    for i in ${_LIST}; do
+        if ! type ${i} > /dev/null 2>&1; then
+            _ERROR="1"
+            __LIST+=("${i}")
+        fi
+    done
+
+    if [[ "${_ERROR}" -eq "1" ]]; then
+        echo -e  "Please install: ${__LIST[*]}"
+        return 1
+    else
+        return 0
+    fi
 }
  ### /Functions
 
 # Do we have everything we need?
-if ! checkSystemExecutables "screen jq sponge seq"; then
-	# Nope, bye
-	exit 1
+if ! checkSystemExecutables "screen jq sponge"; then
+    # Nope, bye
+    exit 1
 fi
 
 cat <<- EOF > "/tmp/${SCREEN_NAME}.sh"
